@@ -2,7 +2,7 @@ import discord
 import os
 import requests
 import json
-#import nasapy
+import nasapy
 import io
 import aiohttp
 from datetime import datetime
@@ -19,12 +19,17 @@ intents.message_content = True
 client = discord.Client(intents=intents)
 
 k = "demo_key"
-#nasa = nasapy.Nasa(key = k)
+nasa = nasapy.Nasa(key = k)
 
+date = datetime.today().strftime('%Y-%m-%d')
+
+apod = nasa.picture_of_the_day(date=date, hd=True)
+
+
+print(apod)
 
 #nasapicture = urllib.request.urlretrieve(url = apod["hdurl"] , filename = os.path.join(image_dir,title))
 
-d = datetime.today().strftime('%Y-%m-%d')
 #apod = nasa.picture_of_the_day(date=d, hd=True)
 
 def get_quote():
@@ -43,7 +48,7 @@ async def on_message(message):
     channel = client.get_channel("775355712271941647")
     if message.content.startswith('nasa'):
         async with aiohttp.ClientSession() as session: # creates session
-            async with session.get("https://apod.nasa.gov/apod/image/2209/WR140_WebbSchmidt_960.jpg") as resp: # gets image from url
+            async with session.get("https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY") as resp: # gets image from url
                 if resp.status != 200:
                     return await channel.send('Could not download file...')
                 data = io.BytesIO(await resp.read())
