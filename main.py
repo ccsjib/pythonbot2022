@@ -78,7 +78,7 @@ async def on_message(message):
                 await message.channel.send(message.author.mention + apodtitle)
                 await message.channel.send(file=discord.File(data, 'nasaapodimage.jpg'))
                 await message.channel.send("Check DMs for picture info!")
-                await message.author.send(file='nasa-logo.png'))
+                await message.author.send(file=discord.File('nasa-logo.png'))
                 await message.author.send(apodinfo)
                 await message.channel.send("Image Date: " + apoddate)
                 
