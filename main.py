@@ -18,8 +18,9 @@ load_dotenv()
 TOKEN = os.getenv("TOKEN")
 
 
-intents = discord.Intents.default()
+intents = discord.Intents.all()
 intents.message_content = True
+intents.reactions = True
 
 client = discord.Client(intents=intents)
 
@@ -77,11 +78,16 @@ async def on_message(message):
                 data = io.BytesIO(await resp.read())
                 await message.channel.send(message.author.mention + apodtitle)
                 await message.channel.send(file=discord.File(data, 'nasaapodimage.jpg'))
-                await message.channel.send("Check DMs for picture info!")
-                await message.author.send(file=discord.File('nasa-logo.png'))
-                await message.author.send(apodinfo)
-                await message.channel.send("Image Date: " + apoddate)
-                
+                pickmsg = 'Pick 📅 for the image date or 📖 for more info!'
+                msg = await message.channel.send(pickmsg)
+                await msg.add_reaction("📅")
+                await msg.add_reaction("📖")
+                    #await client.wait_for("reaction_add")   
+                    #await reaction.message.channel.send(apodinfo)
+                #await message.channel.send(apodinfo)
+                #await message.author.send(file=discord.File('nasa-logo.png'))
+                #await message.author.send(apodinfo)
+                #await message.channel.send("Image Date: " + apoddate)
     if message.author == client.user:
         return
 
@@ -91,6 +97,24 @@ async def on_message(message):
     if message.content.startswith('inspire'):
         quote = get_quote()
         await message.channel.send(quote)
+                
+@client.event
+async def on_reaction_add(reaction, user):
+    apoddate = 'testing1q243'
+    apodinfo = 'testing3iru34owi45urwoirujwe'
+    channel = client.get_channel("775355712271941647")
+    print(channel)
+    #if reaction.message.channel.id != channel.id:
+        #return
+    pickmsg = 'Pick 📅 for the image date or 📖 for more info!'
+    print(reaction.message)
+    #if pickmsg in reaction.message.content and 
+    if reaction.emoji == '📅':
+        print('calendar emoiji')
+        await user.send("tesdfhsljkdhf")
+    #else:
+    #if pickmsg in reaction.message.content and reaction.emoji == '📖':
+            #await user.channel.send(apodinfo)               
     
 client.run(TOKEN)
     

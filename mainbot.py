@@ -18,11 +18,13 @@ load_dotenv()
 TOKEN = os.getenv("TOKEN")
 
 
-intents = discord.Intents.default()
-intents.message_content = True
-intents.reactions = True
 
-client = discord.Client(intents=intents)
+#intents = discord.Intents.default()
+#intents.message_content = True
+#intents.reactions = True
+
+bot = commands.Bot(command_prefix=".", intents=discord.Intents.default())
+
 
 print(datetime.today().strftime('%Y-%m-%d'))
 
@@ -38,16 +40,16 @@ def get_quote():
   return(quote)
 
 
-@client.event
-async def on_ready():
-    print(f'We have logged in as {client.user}')
+@bot.command()
+async def on_ready(ctx):
+    print(f'We have logged in as {bot.user}')
 
-@client.event
-async def on_message(message):
-    channel = client.get_channel("775355712271941647")
-    if message.content.startswith('nasa'):
-        if "date" in message.content:
-            date = message.content.split("date ", 1)[1]
+@bot.event
+async def nasa(ctx):
+    channel = ctx.get_channel("775355712271941647")
+    if ctx.content.startswith('.nasa'):
+        if "date" in ctx.content:
+            date = ctx.content.split("date ", 1)[1]
         else:    
             date = datetime.today().strftime('%Y-%m-%d')  
         
@@ -76,10 +78,10 @@ async def on_message(message):
                 if resp.status != 200:
                     return await channel.send('Could not download file...')
                 data = io.BytesIO(await resp.read())
-                await message.channel.send(message.author.mention + apodtitle)
-                await message.channel.send(file=discord.File(data, 'nasaapodimage.jpg'))
+                await ctx.channel.send(ctx.author.mention + apodtitle)
+                await ctx.channel.send(file=discord.File(data, 'nasaapodimage.jpg'))
                 pickmsg = 'Pick 📅 for the image date or 📖 for more info!'
-                msg = await message.channel.send(pickmsg)
+                msg = await ctx.channel.send(pickmsg)
                 await msg.add_reaction("📅")
                 await msg.add_reaction("📖")
                     #await client.wait_for("reaction_add")   
@@ -88,19 +90,19 @@ async def on_message(message):
                 #await message.author.send(file=discord.File('nasa-logo.png'))
                 #await message.author.send(apodinfo)
                 #await message.channel.send("Image Date: " + apoddate)
-    if message.author == client.user:
+    if ctx.author == bot.user:
         return
 
-    if message.content.startswith('hello'):
-        await message.channel.send(apod)
+    if ctx.content.startswith('hello'):
+        await ctx.channel.send(apod)
 
-    if message.content.startswith('inspire'):
+    if ctx.content.startswith('inspire'):
         quote = get_quote()
-        await message.channel.send(quote)
+        await ctx.channel.send(quote)
                 
-@client.event
+@bot.event
 async def on_raw_reaction_add(payload):
-    channel = client.get_channel("775355712271941647")
+    channel = cotx.get_channel("775355712271941647")
     pickmsg = 'Pick 📅 for the image date or 📖 for more info!'
     print(payload.reaction.message.content)
     if pickmsg in payload.message.content and payload.emoji == '📅':
@@ -110,5 +112,5 @@ async def on_raw_reaction_add(payload):
             await channel.message.send(apodinfo)               
     
     
-client.run(TOKEN)
+bot.run(TOKEN)
     
