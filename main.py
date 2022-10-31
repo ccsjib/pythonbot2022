@@ -150,12 +150,13 @@ async def on_reaction_add(reaction, user):
         return
     #if user reacts calendar, send date and tell var that reaction has been run
     if pickmsg in reaction.message.content and reaction.emoji == '📅' and hasDateRanYet == False:
-        print('calendar emoiji')
+        print('calendar emoji')
         await channel.send(apoddate)
         hasDateRanYet = True
     else:
         #same as calendar but with book reaction
         if pickmsg in reaction.message.content and reaction.emoji == '📖' and hasInfoRanYet == False:
+                print('book emoji')
                 await channel.send(apodinfo)
                 hasInfoRanYet = True  
     
