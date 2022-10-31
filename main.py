@@ -46,7 +46,8 @@ apodinfo = ''
 apoddate = ''
 apodtest = ''
 hasDateRanYet = False                
-hasInfoRanYet = False  
+hasInfoRanYet = False 
+channel = '' 
 
 @client.event
 async def on_ready():
@@ -58,7 +59,11 @@ async def on_message(message):
     global hasInfoRanYet
     
     #current channel ID (this one is #free-for-all)
-    channel = client.get_channel("775355712271941647")
+    global channel
+    #channel = client.get_channel(775355712271941647)
+    channel = message.channel.id
+    print(message.channel.id)
+    print(client.get_channel(775355712271941647))
     
     #if the msg says nasa, reset the reaction counter from any previous posts.
     if message.content.startswith('nasa'):
@@ -142,7 +147,8 @@ async def on_reaction_add(reaction, user):
     global hasDateRanYet
     global hasInfoRanYet
     #free-for-all channel ID
-    channel = client.get_channel(775355712271941647)
+    #channel = client.get_channel(775355712271941647)
+    global channel
     #checks if the msg reacted on matches pickmsg var.
     pickmsg = 'Pick 📅 for the image date or 📖 for more info!'
     #if the reaction is the bot's own, don't do anything 
