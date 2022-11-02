@@ -116,9 +116,8 @@ async def on_message(message):
                     data = io.BytesIO(await resp.read())
                     #mention the user and send the title + picture of the NASA astronomy pic of the day
                     if "youtube" in apodurl:
-                        apodyoutube = apodurl.split("embed/", 1)[1]
-                        print(apodyoutube)
-                        apodytlink = "https://youtu.be/" + apodyoutube
+                        apodytid = apodurl.split("embed/", 1)[1]
+                        apodytlink = "https://youtu.be/" + apodytid
                         await message.channel.send(apodytlink)
                     await message.channel.send(message.author.mention + apodtitle)
                     if "nasa" in apodurl:
