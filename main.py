@@ -62,8 +62,7 @@ async def on_message(message):
     global channel
     #channel = client.get_channel(775355712271941647)
     channel = message.channel.id
-    print(message.channel.id)
-    print(client.get_channel(775355712271941647))
+    
     
     #if the msg says nasa, reset the reaction counter from any previous posts.
     if message.content.startswith('nasa'):
@@ -110,13 +109,20 @@ async def on_message(message):
             
             async with aiohttp.ClientSession() as session: # creates session
                 async with session.get(apodurl) as resp: # gets image from url
+                    print(apodurl)
                     filename = "nasaapodimage.jpg" #changes filename so discord can find it
                     if resp.status != 200: #if aiohttp can't get the file...
                         return await channel.send('Could not download file...')
                     data = io.BytesIO(await resp.read())
                     #mention the user and send the title + picture of the NASA astronomy pic of the day
+                    if "youtube" in apodurl:
+                        apodyoutube = apodurl.split("embed/", 1)[1]
+                        print(apodyoutube)
+                        apodytlink = "https://youtu.be/" + apodyoutube
+                        await message.channel.send(apodytlink)
                     await message.channel.send(message.author.mention + apodtitle)
-                    await message.channel.send(file=discord.File(data, 'nasaapodimage.jpg'))
+                    if "nasa" in apodurl:
+                        await message.channel.send(file=discord.File(data, 'nasaapodimage.jpg'))
                     #explains how to get more data with reactions, and reacts to itself for easy access to these emojis
                     pickmsg = 'Pick 📅 for the image date or 📖 for more info!'
                     msg = await message.channel.send(pickmsg)
