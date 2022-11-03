@@ -160,7 +160,7 @@ async def on_message(message):
             
         #as mentioned at the top of the if statement, this sends and error if msg length is not either 20 or 4
         else:
-            await message.channel.send("invalid input :( \n -**If including a date, make sure to type \"nasa date yyyy-mm-dd\". \n-Otherwise, type \"nasa\"!**\n-Also, try out other commands like \"hello\" and \"inspire\" :)")
+            await message.channel.send("invalid input :( \n -**If including a date, make sure to type \"nasa date yyyy-mm-dd\". \n-Otherwise, type \"nasa\"!**\n-__The first APOD was on **1995-06-16**. Starting **1995-06-20**, daily APODs were uploaded.__\n-Also, try out other commands like \"hello\" and \"inspire\" :)")
             
     #stops the bot from detecting its own msgs/reactions for any code below this.
     if message.author == client.user:
