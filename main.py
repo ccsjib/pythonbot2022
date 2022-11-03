@@ -47,7 +47,7 @@ apoddate = ''
 apodtest = ''
 hasDateRanYet = False                
 hasInfoRanYet = False 
-channel = '' 
+channelsave = '' 
 
 @client.event
 async def on_ready():
@@ -59,9 +59,11 @@ async def on_message(message):
     global hasInfoRanYet
     
     #current channel ID (this one is #free-for-all)
-    global channel
     #channel = client.get_channel(775355712271941647)
-    channel = message.channel.id
+    global channelsave
+    channelsave = message.channel.id
+    channel = channelsave
+    
     
     
     #if the msg says nasa, reset the reaction counter from any previous posts.
@@ -104,7 +106,8 @@ async def on_message(message):
             apoddate = apoddict['date']
             global apodtest
             apodtest = 55
-            #print(apodtest)
+          
+        
             
             
             async with aiohttp.ClientSession() as session: # creates session
@@ -144,7 +147,8 @@ async def on_message(message):
     if message.content.startswith('inspire'):
         quote = get_quote()
         await message.channel.send(quote)
-              
+print("funlkdfjdslkjflkewjf;oiw")
+           
 @client.event
 #checks for a reaction added by a user
 async def on_reaction_add(reaction, user):
@@ -152,8 +156,9 @@ async def on_reaction_add(reaction, user):
     global hasDateRanYet
     global hasInfoRanYet
     #free-for-all channel ID
-    #channel = client.get_channel(775355712271941647)
-    global channel
+    global channelsave
+    print(channelsave)
+    channel = client.get_channel(channelsave)
     #checks if the msg reacted on matches pickmsg var.
     pickmsg = 'Pick 📅 for the image date or 📖 for more info!'
     #if the reaction is the bot's own, don't do anything 
