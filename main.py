@@ -67,6 +67,7 @@ async def on_message(message):
     #making the reaction repeat checker accessible locally.
     global hasDateRanYet
     global hasInfoRanYet
+    global hasAlienRanYet
     
     #channel ID that the msg came from is saved into a global var. Then it is saved in channel locally. 
     #I originally made channel global, but that caused the reaction functionality to break. Instead, I made another var for global use.
@@ -81,6 +82,7 @@ async def on_message(message):
         hasDateRanYet = False
         hasInfoRanYet = False
         hasAlienRanYet = False
+        #print(hasAlienRanYet)
     
         #Next, if "date" is in the msg, save it to a var. If not, use today's date.
         if "date" in message.content:
@@ -158,7 +160,7 @@ async def on_message(message):
             
         #as mentioned at the top of the if statement, this sends and error if msg length is not either 20 or 4
         else:
-            await message.channel.send("invalid input :( try again!")
+            await message.channel.send("invalid input :( \n -**If including a date, make sure to type \"nasa date yyyy-mm-dd\". \n-Otherwise, type \"nasa\"!**\n-Also, try out other commands like \"hello\" and \"inspire\" :)")
             
     #stops the bot from detecting its own msgs/reactions for any code below this.
     if message.author == client.user:
@@ -190,7 +192,7 @@ async def on_reaction_add(reaction, user):
     #if the reaction is the bot's own, don't do anything 
     if user == client.user:
         return
-    
+    print(hasAlienRanYet)
     #checks if the msg reacted on matches pickmsg var.
     pickmsg = 'Pick 📅 for the image date or 📖 for more info!'
     if pickmsg in reaction.message.content:
